@@ -1,14 +1,14 @@
 <template>
   <div id="my-header">
-    <el-menu :default-active="activeIndex" mode="horizontal" router @select="handleSelect">
+    <el-menu default-active="/home" mode="horizontal" router>
       <el-menu-item index="/home">首页</el-menu-item>
       <el-menu-item index="/questionList">题库</el-menu-item>
     </el-menu>
     <div class="my-profile-wrapper">
 <!--      个人信息-->
-      <el-dropdown>
+      <el-dropdown v-if="user.token">
         <span class="el-dropdown-link">
-          <el-image class="my-profile" fit="cover">
+          <el-image src="/images/profile1.jpg" class="my-profile" fit="cover">
             <div slot="error">
               <i class="el-icon-picture-outline"></i>
             </div>
@@ -22,14 +22,23 @@
       </el-dropdown>
 
 <!--      登录按钮-->
-<!--      <router-link to="/login"><el-button class="my-login-button">登录</el-button></router-link>-->
+      <router-link v-if="!user.token" to="/login"><el-button class="my-login-button">登录</el-button></router-link>
     </div>
   </div>
 </template>
 
 <script>
+  import {mapState} from 'vuex'
   export default {
-    name: 'Header'
+    name: 'Header',
+    data(){
+      return {
+
+      }
+    },
+    computed:{
+      ...mapState(['user'])
+    }
   }
 </script>
 
