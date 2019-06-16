@@ -1,3 +1,7 @@
 export default {
-  user:{}
+  user:{},
+  myInterceptors:{},
+  currentQuestionListId:"",
+  registerStep:0,
+  registerData:{}
 }

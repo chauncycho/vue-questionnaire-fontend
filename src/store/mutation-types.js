@@ -1,1 +1,6 @@
 export const SET_USER = 'set_user'
+export const ADD_INTERCEPTORS = 'add_interceptors'
+export const REMOVE_INTERCEPTORS = 'remove_interceptors'
+export const SET_CURRENTQUESTION_LIST_ID= 'set_current_question_list_id'
+export const SET_REGISTER_STEP='set_register_step'
+export const SET_REGISTER_DATA='set_register_data'

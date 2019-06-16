@@ -2,13 +2,13 @@
   <div class="my-container">
     <div class="my-box-wrapper">
       <el-input class="my-input-item" v-model="username" placeholder="账号"></el-input>
-      <el-input type="password" v-model="password" placeholder="密码"></el-input>
+      <el-input type="password" @keyup.enter.native="onLogin" v-model="password" placeholder="密码"></el-input>
       <el-row class="my-row">
         <el-col class="my-col" :span="12">
           <el-button @click="onLogin">登录</el-button>
         </el-col>
         <el-col class="my-col" :span="12">
-          <el-button>注册</el-button>
+          <router-link to="register"><el-button>注册</el-button></router-link>
         </el-col>
       </el-row>
     </div>
@@ -27,17 +27,31 @@
     },
     methods: {
       onLogin(){
-        this.$axios.post('/login',Qs.stringify({
+        this.$axios.post('/api/login',Qs.stringify({
           username:this.username,
           password:this.password
         })).then(response=>{
           console.log(response)
           if(response.data){
             this.$store.dispatch('setUser',response.data)//设置user到全局
+
+            let interceptor = this.$axios.interceptors.request.use(config=>{//添加token拦截器
+              config.headers['token'] = response.data.token;
+              return config;
+            },error=>{
+              this.$message.error('请先登录ヽ(｀Д´)ﾉ')
+              this.$router.push('/login')
+              return Promise.reject(error)
+            })
+
             this.$message({
-              message:"登录成功",
+              message:"登录成功(oﾟ▽ﾟ)o",
               type:"success"
             })
+
+            this.$store.dispatch("addInterceptors",{name:"tokenInterceptor",interceptor});
+
+            this.$router.push("/home")
           }else{
             this.$message({
               message:"登录失败",
@@ -45,7 +59,7 @@
             })
           }
         }).catch(error=>{
-          this.$message("Ohhhhh, 好像发生了错误")
+          this.$message.error("Ohhhhh, 好像发生了错误(╥╯^╰╥)")
         })
       }
     }

@@ -1,7 +1,7 @@
 <template>
-  <div>
-    <h2>Home</h2>
-    <i class="el-icon-edit"></i>
+  <div class="my-container">
+    <h2><(￣︶￣)>无聊的问卷调查系统</h2>
+    <h4 align="right">Power by Chauncy</h4>
   </div>
 </template>
 
@@ -12,5 +12,8 @@ export default {
 </script>
 
 <style scoped>
-
+.my-container{
+  padding: 20px 30px;
+  text-align: center;
+}
 </style>

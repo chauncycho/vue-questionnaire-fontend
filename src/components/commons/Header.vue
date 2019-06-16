@@ -8,16 +8,18 @@
 <!--      个人信息-->
       <el-dropdown v-if="user.token">
         <span class="el-dropdown-link">
-          <el-image src="/images/profile1.jpg" class="my-profile" fit="cover">
-            <div slot="error">
-              <i class="el-icon-picture-outline"></i>
-            </div>
-          </el-image>
+          <img :src="user.profile" class="my-profile" alt="">
+<!--          <el-image src="../../assets/profile1.jpg" class="my-profile" fit="cover">-->
+<!--            <div slot="error">-->
+<!--              <i class="el-icon-picture-outline"></i>-->
+<!--            </div>-->
+<!--          </el-image>-->
         </span>
         <el-dropdown-menu slot="dropdown">
           <el-dropdown-item>个人资料</el-dropdown-item>
           <el-dropdown-item>答题分析</el-dropdown-item>
           <router-link to="/createQuestion"><el-dropdown-item>创建问卷</el-dropdown-item></router-link>
+          <span @click="onLogout"><el-dropdown-item>退出登录</el-dropdown-item></span>
         </el-dropdown-menu>
       </el-dropdown>
 
@@ -36,8 +38,28 @@
 
       }
     },
+    methods:{
+      onLogout(){
+        this.$confirm('亲~不要离开我(/□＼*)','退出',{
+          confirmButtonText:'离开',
+          cancelButtonText:'留下'
+        }).then(()=>{
+          this.$store.dispatch("setUser",{})
+          this.$router.push("/login/login")
+          this.$axios.interceptors.request.eject(this.myInterceptors.tokenInterceptor)
+          this.$store.dispatch("removeInterceptors","tokenInterceptor")
+          this.$message('さよなら(￣.￣)')
+        }).catch(()=>{
+          this.$message({
+            type: 'info',
+            message: '你是个好人(๑•̀ㅂ•́)و✧'
+          })
+        })
+
+      }
+    },
     computed:{
-      ...mapState(['user'])
+      ...mapState(['user','myInterceptors'])
     }
   }
 </script>
@@ -59,6 +81,7 @@
   }
   .my-profile img{
     object-position: 50% 50%;
+    object-fit: cover;
   }
   .my-login-button{
     height: 50px;
